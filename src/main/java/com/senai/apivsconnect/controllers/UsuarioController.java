@@ -50,7 +50,7 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioRepository.save(usuario));
     }
 
-    @PutMapping
+    @PutMapping("/{idUsuario}")
     public ResponseEntity<Object> editarUsuario(@PathVariable(value = "idUsuario") UUID id, @RequestBody @Valid UsuarioDto usuarioDto) {
         Optional<UsuarioModel> usuarioBuscado = usuarioRepository.findById(id);
 
@@ -58,9 +58,25 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario não encontrado");
         }
 
-        UsuarioModel usuario = new UsuarioModel();
+        UsuarioModel usuario = usuarioBuscado.get();
+
         BeanUtils.copyProperties(usuarioDto, usuario);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioRepository.save(usuario));
     }
+
+    @DeleteMapping("/{idUsuario}")
+    public ResponseEntity<Object> deletarUsuario(@PathVariable(value = "idUsuario") UUID id) {
+        Optional<UsuarioModel> usuarioBuscado = usuarioRepository.findById(id);
+
+        if (usuarioBuscado.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario não encontrado");
+        }
+
+        usuarioRepository.delete(usuarioBuscado.get());
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Usuario deletado com sucesso!");
+    }
+
+
 }
