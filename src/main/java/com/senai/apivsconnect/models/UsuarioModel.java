@@ -28,7 +28,7 @@ public class UsuarioModel implements Serializable {
     private String cep;
     private String url_img;
 
-    // Provisóriamente String, será alterado para TipoModel enum
+    // Provisoriamente String, será alterado para TipoModel enum
     private String tipo_usuario;
 
 }
