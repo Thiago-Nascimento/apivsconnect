@@ -4,6 +4,9 @@ import com.senai.apivsconnect.dtos.UsuarioDto;
 import com.senai.apivsconnect.models.UsuarioModel;
 import com.senai.apivsconnect.repositories.UsuarioRepository;
 import com.senai.apivsconnect.services.FileUploadService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +48,11 @@ public class UsuarioController {
     }
 
     @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    @Operation(summary = "Método para criar um usuário", method = "POST")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Cadastro de Usuário feito com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Parâmetros inválidos")
+    })
     public ResponseEntity<Object> cadastrarUsuario(@ModelAttribute @Valid UsuarioDto usuarioDto) {
         if (usuarioRepository.findByEmail(usuarioDto.email()) != null) {
             // Não pode cadastrar
